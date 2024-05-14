@@ -1,0 +1,46 @@
+<template>
+  <web-view ref="web-view" class="web-view" src="/hybrid/html/local.html" @message="message" @error="error"
+    @loading="loading" @load="load">
+  </web-view>
+</template>
+
+<script>
+  export default {
+    data() {
+      return {
+        loadError: false,
+        loadFinish: false
+      }
+    },
+    methods: {
+      message(event : UniWebViewMessageEvent) {
+        console.log(JSON.stringify(event));
+        let contentStr = JSON.stringify(event.detail);
+        <!-- #ifdef APP-IOS -->
+          contentStr = JSON.stringify(event.detail.data[0]);
+        <!-- #endif -->
+        uni.showModal({
+          content: contentStr,
+          showCancel: false
+        });
+      },
+      error(event : UniWebViewErrorEvent) {
+        this.loadError = true
+        console.log(JSON.stringify(event));
+      },
+      loading(event : UniWebViewLoadingEvent) {
+        console.log(JSON.stringify(event));
+      },
+      load(event : UniWebViewLoadEvent) {
+        this.loadFinish = true;
+        console.log(JSON.stringify(event));
+      }
+    }
+  }
+</script>
+
+<style>
+.web-view {
+  flex: 1;
+}
+</style>

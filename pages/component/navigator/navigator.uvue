@@ -1,0 +1,31 @@
+<template>
+  <page-head :title="title"></page-head>
+  <view class="uni-padding-wrap uni-common-mt">
+    <navigator class="navigator navigate" url="navigate?title=navigate">
+      <button type="default">跳转到新页面</button>
+    </navigator>
+    <navigator class="navigator redirect" url="redirect?title=redirect" open-type="redirect">
+      <button type="default">在当前页打开</button>
+    </navigator>
+    <navigator style="flex-direction: row;justify-content: space-between;">
+      <text>两端对齐样式测试</text>
+      <view style="width: 20px;height: 20px; background-color: aqua;"></view>
+    </navigator>
+  </view>
+</template>
+
+<script>
+  export default {
+    data() {
+      return {
+        title: 'navigator'
+      }
+    }
+  }
+</script>
+
+<style>
+  .navigator {
+    margin-bottom: 15px;
+  }
+</style>

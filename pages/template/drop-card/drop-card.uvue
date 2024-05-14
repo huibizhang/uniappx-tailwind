@@ -1,0 +1,31 @@
+<template>
+  <view class="root">
+    <template v-for="(item,index) in cardList" :key="index">
+      <card ref="card" :img="item" :cardIndex="index"></card>
+    </template>
+  </view>
+</template>
+<script lang="uts">
+  import card from './card/card.uvue';
+  export default {
+    components: {
+      card
+    },
+    data() {
+      return {
+        cardList: [
+          '/static/template/drop-card/1.jpg',
+          '/static/template/drop-card/2.jpg',
+          '/static/template/drop-card/3.jpg'
+        ] as string.ImageURIString[]
+      }
+    }
+  }
+</script>
+<style>
+  .root {
+    flex: 1;
+    position: relative;
+    align-items: center;
+  }
+</style>

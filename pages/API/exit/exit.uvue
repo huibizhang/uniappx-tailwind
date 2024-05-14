@@ -1,0 +1,23 @@
+<template>
+	<view>
+		<button @tap="exitAppClick">退出应用</button>
+	</view>
+</template>
+
+<script>
+	export default {
+		methods: {
+			exitAppClick:function(){
+				uni.exit({
+					success:function(res){
+						console.log(res)
+					}
+				})
+			}
+		}
+	}
+</script>
+
+<style>
+
+</style>

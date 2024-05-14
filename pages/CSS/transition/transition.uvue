@@ -1,0 +1,268 @@
+<template>
+  <!-- #ifdef APP -->
+  <scroll-view style="flex: 1">
+  <!-- #endif -->
+    <view>
+      <view class="container">
+        <text class="text">点击修改宽度</text>
+        <view class="base-style transition-width" id="widthOrHeight" @click="changeWidthOrHeight"></view>
+      </view>
+      <view class="container">
+        <text class="text">点击修改宽度(递增)</text>
+        <view class="width-progress transition-width" id="widthProgress" @click="changeWidthProgress"></view>
+      </view>
+      <view class="container">
+        <text class="text">点击修改Margin</text>
+        <view class="base-style transition-margin" id="styleMargin" @click="changeMargin"></view>
+      </view>
+      <view class="container">
+        <text class="text">点击修改Padding</text>
+        <view class="base-style transition-padding" id="stylePadding" @click="changePadding">
+          <view style="background-color: black; height: 50px; width: 50px"></view>
+        </view>
+      </view>
+      <view class="container">
+        <text class="text">点击修改Background</text>
+        <view class="base-style transition-background" id="styleBackground" @click="changeBackground"></view>
+      </view>
+      <view class="container">
+        <text class="text">动态修改Background</text>
+        <view class="base-style" id="propertyStyleBackground" @click="propertyChangeBackground"></view>
+      </view>
+      <view class="container">
+        <text class="text">点击修改Transform</text>
+        <view class="base-style transition-transform" id="styleTransform" @click="changeTransform"></view>
+      </view>
+      <view class="container">
+        <text class="text">点击修改Transform和宽</text>
+        <view class="base-style transition-transform-width" id="styleTransformWithWidth" @click="changeTransformWithWidth"></view>
+      </view>
+      <view class="container" @click="changeTransformWithOrigin">
+        <text class="text">点击修改Transform（含transform-origin）</text>
+        <view class="base-style transition-transform" style="transform-origin: 0 0;" id="styleTransformWithOrigin"></view>
+      </view>
+      <view class="container">
+        <text class="text">点击修改Border</text>
+        <view class="base-style transition-border" id="styleBorder" @click="changeBorder"></view>
+      </view>
+      <view class="container">
+        <text class="text">点击修改Position</text>
+        <view class="base-style transition-position" id="stylePosition" @click="changestylePosition"></view>
+      </view>
+    </view>
+  <!-- #ifdef APP -->
+  </scroll-view>
+  <!-- #endif -->
+</template>
+
+<script>
+  export default {
+    data() {
+      return {
+        isTranstionWidthOrHeight: false,
+        widthOrHeight: null as UniElement | null,
+        widthProgress: null as UniElement | null,
+        progressWidth: 200,
+        isTranstionChangeMargin: false,
+        styleMargin: null as UniElement | null,
+        isTransitionStylePadding: false,
+        stylePadding: null as UniElement | null,
+        isTransitionstyleBackground: false,
+        styleBackground: null as UniElement | null,
+        isTransitionStyleTransform: false,
+        styleTransform: null as UniElement | null,
+        isTransitionStyleTransformWithWidth:false,
+        styleTransformWithWidth: null as UniElement | null,
+        isTransitionstyleBorder: false,
+        styleBorder: null as UniElement | null,
+        isTransitionstylePosition: false,
+        stylePosition: null as UniElement | null,
+        isSetTransition: false,
+        isTransitionpropertystyleBackground: false,
+        propertyStyleBackground: null as UniElement | null,
+        isTransitionStyleTransformWithOrigin: false,
+        styleTransformWithOrigin: null as UniElement | null,
+      }
+    },
+    onReady() {
+      this.widthOrHeight = uni.getElementById("widthOrHeight")
+      this.widthProgress = uni.getElementById("widthProgress")
+      this.styleMargin = uni.getElementById("styleMargin")
+      this.stylePadding = uni.getElementById("stylePadding")
+      this.styleBackground = uni.getElementById("styleBackground")
+      this.styleTransform = uni.getElementById("styleTransform")
+      this.styleBorder = uni.getElementById("styleBorder")
+      this.stylePosition = uni.getElementById("stylePosition")
+      this.propertyStyleBackground = uni.getElementById("propertyStyleBackground")
+      this.styleTransformWithOrigin = uni.getElementById("styleTransformWithOrigin")
+      this.styleTransformWithWidth = uni.getElementById("styleTransformWithWidth")
+    },
+    methods: {
+      changeWidthOrHeight() {
+        this.widthOrHeight?.style?.setProperty("width", this.isTranstionWidthOrHeight
+          ? '200px'
+          : '300px')
+        this.isTranstionWidthOrHeight = !this.isTranstionWidthOrHeight
+      },
+      changeWidthProgress() {
+        this.progressWidth += 20
+        this.widthProgress?.style?.setProperty("width", this.progressWidth + 'px')
+      },
+      changeMargin() {
+        this.styleMargin?.style?.setProperty("margin-top", this.isTranstionChangeMargin
+          ? '0px'
+          : '50px'
+        )
+        this.styleMargin?.style?.setProperty("margin-left", this.isTranstionChangeMargin
+          ? '0px'
+          : '50px'
+        )
+        this.isTranstionChangeMargin = !this.isTranstionChangeMargin
+      },
+
+      changePadding() {
+        this.stylePadding?.style?.setProperty("padding-top", this.isTransitionStylePadding
+          ? '0px'
+          : '50px')
+        this.stylePadding?.style?.setProperty("padding-left", this.isTransitionStylePadding
+          ? '0px'
+          : '50px')
+        this.isTransitionStylePadding = !this.isTransitionStylePadding
+      },
+      changeBackground() {
+        this.styleBackground?.style?.setProperty("background-color", this.isTransitionstyleBackground
+          ? 'brown'
+          : 'black'
+        )
+        this.styleBackground?.style?.setProperty("opacity", this.isTransitionstyleBackground
+          ? '1'
+          : '0.5'
+        )
+        this.isTransitionstyleBackground = !this.isTransitionstyleBackground
+      },
+      propertyChangeBackground() {
+        if (!this.isSetTransition) {
+          this.propertyStyleBackground?.style?.setProperty("transition-property", "background-color")
+          this.propertyStyleBackground?.style?.setProperty("transition-duration", "1000ms")
+          this.isSetTransition = true
+        }
+        this.propertyStyleBackground?.style?.setProperty("background-color", this.isTransitionpropertystyleBackground
+          ? 'brown'
+          : 'black'
+        )
+        this.isTransitionpropertystyleBackground = !this.isTransitionpropertystyleBackground
+      },
+      changeTransform() {
+        this.styleTransform?.style?.setProperty("transform", this.isTransitionStyleTransform
+          ? 'rotate(0deg)'
+          : 'rotate(135deg)'
+        )
+        this.isTransitionStyleTransform = !this.isTransitionStyleTransform
+      },
+      changeTransformWithWidth() {
+        this.styleTransformWithWidth?.style?.setProperty("transform", this.isTransitionStyleTransformWithWidth
+          ? 'rotate(0deg)'
+          : 'rotate(135deg)'
+        )
+        this.styleTransformWithWidth?.style?.setProperty("width", this.isTransitionStyleTransformWithWidth
+          ? '200px'
+          : '100px'
+        )
+        this.isTransitionStyleTransformWithWidth = !this.isTransitionStyleTransformWithWidth
+      },
+      changeTransformWithOrigin() {
+        this.styleTransformWithOrigin?.style?.setProperty("transform", this.isTransitionStyleTransformWithOrigin
+          ? 'scaleX(1)'
+          : 'scaleX(0)'
+        )
+        this.isTransitionStyleTransformWithOrigin = !this.isTransitionStyleTransformWithOrigin
+      },
+      changeBorder() {
+        this.styleBorder?.style?.setProperty("border-color", this.isTransitionstyleBorder
+          ? 'brown'
+          : 'yellow'
+        )
+        this.isTransitionstyleBorder = !this.isTransitionstyleBorder
+      },
+      changestylePosition() {
+        this.stylePosition?.style?.setProperty("left", this.isTransitionstylePosition
+          ? '0px'
+          : '100px'
+        )
+        this.isTransitionstylePosition = !this.isTransitionstylePosition
+      },
+    },
+  }
+</script>
+
+<style>
+  .container {
+    margin: 7px;
+    background-color: white;
+  }
+
+  .text {
+    margin-top: 10px;
+    margin-bottom: 16px;
+  }
+
+  .base-style {
+    width: 200px;
+    height: 200px;
+    background-color: brown;
+  }
+
+  .width-progress {
+    width: 200px;
+    height: 200px;
+    background-color: brown;
+  }
+
+  .transform-bgColor {
+    transition-property: background-color;
+    transition-duration: 0.5s;
+  }
+
+  .transition-width {
+    transition-property: width;
+    transition-duration: 1s;
+  }
+
+  .transition-margin {
+    transition-property: margin-left, margin-top;
+    transition-duration: 1s;
+  }
+
+  .transition-padding {
+    transition-property: padding-left, padding-top;
+    transition-duration: 1s;
+  }
+
+  .transition-background {
+    transition-property: background-color, opacity;
+    transition-duration: 1s;
+  }
+
+  .transition-transform {
+    transition-property: transform;
+    transition-duration: 1s;
+  }
+
+  .transition-border {
+    border-width: 5px;
+    border-color: brown;
+    border-style: solid;
+    transition-property: border-color;
+    transition-duration: 1s;
+  }
+
+  .transition-position {
+    left: 0px;
+    transition-property: left;
+    transition-duration: 1s;
+  }
+  .transition-transform-width {
+    transition-property: transform, width;
+    transition-duration: 1s;
+  }
+</style>

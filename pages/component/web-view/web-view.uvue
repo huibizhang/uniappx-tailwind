@@ -1,0 +1,124 @@
+<template>
+  <view class="uni-flex-item">
+    <web-view id="web-view" class="uni-flex-item" :src="src" :webview-styles="webview_styles"
+      :horizontalScrollBarAccess="horizontalScrollBarAccess" :verticalScrollBarAccess="verticalScrollBarAccess"
+      @message="message" @error="error" @loading="loading" @load="load" @download="download">
+    </web-view>
+    <!-- #ifdef APP -->
+    <view class="uni-padding-wrap uni-common-mt">
+      <view class="uni-btn-v">
+        <input class="uni-input" confirmType="go" placeholder="输入网址跳转" @confirm="confirm" maxlength="-1"/>
+      </view>
+      <view class="uni-row uni-btn-v">
+        <button class="uni-flex-item" type="primary" @click="back">后退</button>
+        <button class="margin-left-5 uni-flex-item" type="primary" @click="forward">前进</button>
+      </view>
+      <view class="uni-row uni-btn-v">
+        <button class="uni-flex-item" type="primary" @click="reload">重新加载</button>
+        <button class="margin-left-5 uni-flex-item" type="primary" @click="stop">停止加载</button>
+      </view>
+      <view class="uni-btn-v">
+        <button type="primary" @click="nativeToWeb">原生和Web通信</button>
+      </view>
+      <!-- #ifdef APP-ANDROID -->
+      <view class="uni-row uni-btn-v">
+        <view class="uni-row uni-flex-item align-items-center">
+          <text>显示横向滚动条</text>
+          <switch :checked="true" @change="changeHorizontalScrollBarAccess"></switch>
+        </view>
+        <view class="uni-row uni-flex-item align-items-center">
+          <text>显示竖向滚动条</text>
+          <switch :checked="true" @change="changeVerticalScrollBarAccess"></switch>
+        </view>
+      </view>
+      <!-- #endif -->
+    </view>
+    <!-- #endif -->
+  </view>
+</template>
+
+<script>
+  export default {
+    data() {
+      return {
+        src: 'https://www.dcloud.io',
+        webview_styles: {
+          progress: {
+            color: '#FF3333'
+          }
+        },
+        webviewContext: null as WebviewContext | null,
+        loadError: false,
+        horizontalScrollBarAccess: true,
+        verticalScrollBarAccess: true
+      }
+    },
+    onReady() {
+      // #ifdef APP
+      // TODO web 实现createWebviewContext
+      this.webviewContext = uni.createWebviewContext('web-view', this)
+      // #endif
+    },
+    methods: {
+      back() {
+        this.webviewContext?.back();
+      },
+      forward() {
+        this.webviewContext?.forward();
+      },
+      reload() {
+        this.webviewContext?.reload();
+      },
+      stop() {
+        this.webviewContext?.stop();
+      },
+      nativeToWeb() {
+        this.webviewContext?.evalJS("alert('hello uni-app x')");
+      },
+      message(event : UniWebViewMessageEvent) {
+        console.log(JSON.stringify(event));
+      },
+      error(event : UniWebViewErrorEvent) {
+        this.loadError = true
+        console.log(JSON.stringify(event));
+      },
+      loading(event : UniWebViewLoadingEvent) {
+        console.log(JSON.stringify(event));
+      },
+      load(event : UniWebViewLoadEvent) {
+        console.log(JSON.stringify(event));
+      },
+      download(event : UniWebViewDownloadEvent) {
+        console.log(JSON.stringify(event));
+        uni.showModal({
+          content: "下载链接: " + event.detail.url + "\n文件大小: " + event.detail.contentLength / 1024 + "KB",
+          showCancel: false
+        });
+      },
+      confirm(event : UniInputConfirmEvent) {
+        console.log(JSON.stringify(event));
+        let url = event.detail.value;
+        if (!url.startsWith('https://') && !url.startsWith('http://')) {
+          url = 'https://' + url;
+        }
+        this.src = url;
+      },
+      changeHorizontalScrollBarAccess(event : UniSwitchChangeEvent) {
+        this.horizontalScrollBarAccess = event.detail.value;
+      },
+      changeVerticalScrollBarAccess(event : UniSwitchChangeEvent) {
+        this.verticalScrollBarAccess = event.detail.value;
+      }
+    }
+  }
+</script>
+
+<style>
+  .margin-left-5 {
+    margin-left: 5px;
+  }
+
+  .align-items-center {
+    align-items: center;
+  }
+</style>
