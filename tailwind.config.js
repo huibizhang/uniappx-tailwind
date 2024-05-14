@@ -1,4 +1,6 @@
 /** @type {import('tailwindcss').Config} */
+const plugin = require('tailwindcss/plugin')
+
 module.exports = {
   content: [
     './components/**/*.{js,ts,uts,vue,uvue}',
@@ -6,12 +8,30 @@ module.exports = {
     './App.uvue',
 	'./index.html',
   ],
-  corePlugins: {
-    preflight: false,
-  },
+  presets: [ require('./tailwind-preset.js')],
   theme: {
-    extend: {},
+	  line: {
+		1: '1',
+		2: '2',
+		3: '3',
+		4: '4',
+		5: '5',
+		6: '6',
+	  }
   },
-  plugins: [],
+  plugins: [
+	plugin(function ({ matchUtilities, theme }) {
+      matchUtilities(
+        {
+          line: (value) => ({
+            line: value,
+          }),
+        },
+        {
+          values: theme('line'),
+        },
+      )
+    }),
+  ],
 }
 
